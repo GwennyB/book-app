@@ -4,7 +4,7 @@ const express = require('express');
 const ejs = require('ejs');
 const superagent = require('superagent');
 const app = express();
-app.use('dotenv');
+require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
@@ -13,3 +13,6 @@ app.listen(PORT, () => {
 
 //set templating engine
 app.set('view engine', 'ejs');
+app.get(('/'), (request, response) => {
+  response.render('index');
+});
