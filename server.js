@@ -36,9 +36,9 @@ function getBooks(request,response) {
   }
   // call DB search
   // fetch data from API (if DB empty)
-  Book.fetch(handler);
+  const booksToRender = Book.fetch(handler);
   // call save to DB
-  // send formatted data to render
+  // send formatted data to render (use booksToRender)
 }
 
 function Book (data) {
@@ -55,20 +55,20 @@ Book.fetch(request){
   superagent.get(url)
     .then(results => {
       // send book data (from DB or API) to makeBooks
-      Book.makeBooks(results);
+      return Book.makeBooks(results);
     })
     .catch(error => handleError(error));
 }
 
 Book.makeBooks(bookData) {
-  // make new Book objects for each item in incoming bookData
   // build array to return to render
+  const allBooks = [];
+  // make new Book objects for each item in incoming bookData
+  bookData.body.items.slice(0,10).map( entry => {
+    allBooks.push(new Book(entry));
+  })
+  return allBooks;
 }
-
-
-// function getBooks(request, response) {
-  
-  // }
 
 function handleError(error,status) {
   console.error('Sorry, there was an error.');
