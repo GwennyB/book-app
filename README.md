@@ -5,11 +5,11 @@
 
 Estimate of time needed to complete: 90mins
 
-Start time: _____
+Start time: 9:20am
 
-Finish time: _____
+Finish time: 10:05am
 
-Actual time needed to complete: _____
+Actual time needed to complete: 45mins
 
 
 ### Feature 2: Search the Google Books API
@@ -50,9 +50,9 @@ This application accepts searches the Google Books API for book data based on us
 
 ## Change Log
 12-11-2018 9:30am - Application now has a basic Express server with EJS, Superagent, and Dotenv dependencies.
+12-11-2018 10:10am - Application now has a basic HTML scaffold and a test route to render it.
 
 ## Credits and Collaborations
 This application is a collaborative effort by:
   Gwen Zubatch - https://github.com/GwennyB
   Alistair Blake - https://github.com/Alwynblake
-  
