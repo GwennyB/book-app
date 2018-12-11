@@ -26,7 +26,7 @@ function getBooks(request,response) {
   // define handler
   const handler = {
     query: request.body.search_query,
-    queryType: request.body.title==='on' ? intitle : inauthor,
+    queryType: request.body.title==='on' ? 'intitle' : 'inauthor',
     // cacheHit: () => {
     //   // for DB cache
     // },
@@ -36,38 +36,35 @@ function getBooks(request,response) {
   }
   // call DB search
   // fetch data from API (if DB empty)
-  const booksToRender = Book.fetch(handler);
+  Book.fetch(handler,response);
   // call save to DB
-  // send formatted data to render (use booksToRender)
 }
 
 function Book (data) {
-  this.title = data.title;
-  this.image = data.imageLinks.smallThumbnail;
-  this.authors = data.authors;
-  this.summary = data.description
+  this.title = data.volumeInfo.title || 'Title not listed.';
+  this.image = data.volumeInfo.imageLinks.smallThumbnail || 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg';
+  this.authors = data.volumeInfo.authors || 'Authors not listed.';
+  this.summary = data.volumeInfo.description || 'Summary not available.'
 }
 
-Book.fetch(request){
+Book.fetch = function (request,response) {
   // request data from API
-  const url = `https://www.googleapis.books/v1/volumes?q=${request.queryType}:${request.query}`
+  const url = `https://www.googleapis.com/books/v1/volumes?q=${request.queryType}:${request.query}`
 
   superagent.get(url)
     .then(results => {
-      // send book data (from DB or API) to makeBooks
-      return Book.makeBooks(results);
-    })
+      Book.makeBooks(results.body.items,response);})
     .catch(error => handleError(error));
 }
 
-Book.makeBooks(bookData) {
+Book.makeBooks = function (bookData,response) {
   // build array to return to render
   const allBooks = [];
   // make new Book objects for each item in incoming bookData
-  bookData.body.items.slice(0,10).map( entry => {
+  bookData.slice(0,10).map( entry => {
     allBooks.push(new Book(entry));
   })
-  return allBooks;
+  response.render('./pages/searches/show', allBooks);
 }
 
 function handleError(error,status) {
