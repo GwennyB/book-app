@@ -4,24 +4,38 @@
 const express = require('express');
 const app = express();
 const superagent = require('superagent');
-const PORT = process.env.PORT || 4000;
+const pg = require('pg');
 
 // middleware (captures req/res and modifies)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public')); // for serving static content
 
 require('dotenv').config();
+const PORT = process.env.PORT;
+
+// connect db client
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.error(err));
 
 //set templating engine
 app.set('view engine', 'ejs');
-app.get(('/'), (request, response) => {
-  response.render('index');
-});
+app.get(('/'), getSavedBooks); // 
 
 app.get(('/search'), (request, response) => {
   response.render('./pages/searches/search');
 });
 app.post('/search', getBooks);
+
+function getSavedBooks(request,response) {
+  let SQL = 'SELECT * from bookslist;';
+  return client.query(SQL)
+    .then(results => {
+      console.log('results to render: ', results.rows);
+      response.render('./pages/searches/show', {allBooks: results.rows});
+    });
+}
+
 
 function getBooks(request,response) {
   // define handler
@@ -35,7 +49,7 @@ function getBooks(request,response) {
 function Book (data) {
   this.title = data.volumeInfo.title || 'Title not listed.';
   this.image = data.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
-  this.authors = data.volumeInfo.authors || 'Authors not listed.';
+  this.authors = data.volumeInfo.authors.join(', ') || 'Authors not listed.';
   this.summary = data.volumeInfo.description || 'Summary not available.'
 }
 
