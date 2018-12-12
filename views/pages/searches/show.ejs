@@ -12,17 +12,17 @@
     <div></div>
     <div>
       <ul>
-        <% for (var book in allBooks) { %>
+        <% allBooks.forEach( book => { %>
         <li>
           <div>
-            <img src=<%= book.image %> alt=<%= book.title %>>
+            <img src="<%= book.image %>" alt="<%= book.title %>">
           </div>
           <h3><%= book.title %></h3>
-          <% for (var author in book.authors) { %>
+          <% for (var author of book.authors) { %>
           <h4><%= author %></h4>
           <% } %>
           <p><%= book.summary %></p>
-        <% } %>
+        <% }) %>
           </li>
       </ul>
     </div>
