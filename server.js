@@ -26,8 +26,21 @@ app.get(('/search'), (request, response) => {
   response.render('./pages/searches/search');
 });
 app.post('/search', getBooks);
+let searchResults = [];
+
+app.get('/search/:book_isbn', changeBook);
+app.post('/selected/:book_isbn', saveBook);
 
 app.get('/books/:book_id', getOneBook);
+
+function changeBook(request,response) {
+  let selected = searchResults.forEach(val => {
+    if (val.isbn === request.params.book_isbn) {
+      return val;
+    }
+  })
+  response.send(selected);
+}
 
 function getOneBook (request,response) {
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
@@ -66,6 +79,7 @@ function Book (data) {
   this.image = data.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
   this.authors = data.volumeInfo.authors.join(', ') || 'Authors not listed.';
   this.summary = data.volumeInfo.description || 'Summary not available.'
+  this.isbn = data.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not listed.'
 }
 
 Book.fetch = function (handler,response) {
@@ -77,6 +91,8 @@ Book.fetch = function (handler,response) {
       return arrOfBooks
     })
     .then (results => {
+      searchResults = results;
+      console.log('saved search: ',searchResults[0]);
       response.render('./pages/searches/show', { allBooks: results})
     })
     .catch(error => handleError(error));

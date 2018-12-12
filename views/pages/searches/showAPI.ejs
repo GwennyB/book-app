@@ -20,10 +20,31 @@
             <h3><%= book.title %></h3>
             <h4><%= book.authors %></h4>
             <p><%= book.summary %></p>
-            <a href="/books/<%= book.id %>">View Book Details</a>
+            <a href="/search/<%= book.isbn %>">Select This Book</a>
           </li>
         <% }) %>
       </ul>
+      <form method="POST" action="/selected/<%= book.isbn %>">
+        <label for="">
+          <input type="text" value="<%= selected.title %>">
+        </label>
+        <label for="">
+          <input type="text" value="<%= selected.authors %>">
+        </label>
+        <label for="">
+          <input type="text" value="<%= selected.isbn %>">
+        </label>
+        <label for="">
+          <input type="text" value="<%= selected.image %>">
+        </label>
+        <label for="">
+          <textarea type="" value="<%= selected.summary %>">
+        </label>
+        <select name="" id="">
+          <input type="text">
+        </select>
+        <a href="/select/<%= book.id %>">Select This Book</a>
+      </form>
     </div>
     <footer></footer>
   </main>
