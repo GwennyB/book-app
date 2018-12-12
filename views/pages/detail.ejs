@@ -2,26 +2,26 @@
 <html>
 
 <head>
-  <title>Search Results</title>
+  <title>Book Details</title>
 </head>
 
 <body>
-  <h1> hello world</h1>
+  <h1>Book Details</h1>
   <main>
     <header></header>
     <div></div>
     <div>
       <ul>
-        <% allBooks.forEach( book => { %>
           <li>
             <div>
-              <img src="<%= book.image %>" alt="<%= book.title %>">
+              <img src="<%= book.image %>" alt="<%= book.title %>"">
             </div>
             <h3><%= book.title %></h3>
             <h4><%= book.authors %></h4>
             <p><%= book.summary %></p>
+            <p><%= book.isbn %></p>
+            <p><%= book.bookshelf %></p>
           </li>
-        <% }) %>
       </ul>
     </div>
     <footer></footer>
@@ -29,3 +29,4 @@
 </body>
 
 </html>
+

@@ -27,13 +27,28 @@ app.get(('/search'), (request, response) => {
 });
 app.post('/search', getBooks);
 
+app.get('/books/:book_id', getOneBook);
+
+function getOneBook (request,response) {
+  let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
+  console.log('request.params.book_id',request.params);
+  let values = [request.params.book_id];
+  return client.query(SQL,values)
+    .then( results => {
+      console.log('SQL results: ',results.rows);
+      response.render('./pages/detail', {book: results.rows[0]});
+    })
+    .catch(error => handleError(error));
+
+}
+
 function getSavedBooks(request,response) {
   let SQL = 'SELECT * from bookslist;';
   return client.query(SQL)
     .then(results => {
-      console.log('results to render: ', results.rows);
-      response.render('./pages/searches/show', {allBooks: results.rows});
-    });
+      response.render('./pages/searches/showDB', {allBooks: results.rows});
+    })
+    .catch(error => handleError(error));
 }
 
 
