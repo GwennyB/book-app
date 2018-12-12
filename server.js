@@ -40,7 +40,7 @@ function getBooks(request,response) {
 
 function Book (data) {
   this.title = data.volumeInfo.title || 'Title not listed.';
-  this.image = data.volumeInfo.imageLinks.thumbnail || 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
+  this.image = data.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
   this.authors = data.volumeInfo.authors || 'Authors not listed.';
   this.summary = data.volumeInfo.description || 'Summary not available.'
 }
