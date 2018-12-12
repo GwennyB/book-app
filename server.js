@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 4000;
 
 // middleware (captures req/res and modifies)
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static('./public')); // for serving static content
+app.use(express.static('./public')); // for serving static content
 
 require('dotenv').config();
 
@@ -18,6 +18,9 @@ app.get(('/'), (request, response) => {
   response.render('index');
 });
 
+app.get(('/search'), (request, response) => {
+  response.render('./pages/searches/search');
+});
 app.post('/search', getBooks);
 
 function getBooks(request,response) {
@@ -25,17 +28,8 @@ function getBooks(request,response) {
   const handler = {
     query: request.body.search_query,
     queryType: request.body.title==='on' ? 'intitle' : 'inauthor',
-    // cacheHit: () => {
-    //   // for DB cache
-    // },
-    // cacheMiss: () => {
-    //   // for DB cache
-    // }
   }
-  // call DB search
-  // fetch data from API (if DB empty)
   Book.fetch(handler,response);
-  // call save to DB
 }
 
 function Book (data) {
@@ -56,6 +50,7 @@ Book.fetch = function (handler,response) {
     .then (results => {
       response.render('./pages/searches/show', { allBooks: results})
     })
+    .catch(error => handleError(error));
 }
 
 Book.makeBooks = function (bookData) {
@@ -76,6 +71,10 @@ Book.makeBooks = function (bookData) {
     // console.log('allBooks @ 74: ',allBooks.length);
     return allBooks;
   }
+}
+
+function handleError(error) {
+  response.send('Sorry, there was an error.');
 }
 
 app.listen(PORT, () => {
