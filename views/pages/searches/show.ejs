@@ -18,9 +18,7 @@
               <img src="<%= book.image %>" alt="<%= book.title %>">
             </div>
             <h3><%= book.title %></h3>
-            <% for (var author of book.authors) { %>
-            <h4><%= author %></h4>
-            <% } %>
+            <h4><%= book.authors %></h4>
             <p><%= book.summary %></p>
           </li>
         <% }) %>
