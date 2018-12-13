@@ -1,9 +1,10 @@
 <li>
   <div>
-    <img src="<%= book.image %>" alt="<%= book.title %>">
+    <img name="image" src="<%= book.image %>" alt="<%= book.title %>">
   </div>
-  <h3><%= book.title %></h3>
-  <h4><%= book.authors %></h4>
-  <p><%= book.summary %></p>
-  <a href="/<%= path_folder %>/<%= path_id %>"> <%= buttonname %> ></a>
+  <h3 name="title"><%= book.title %></h3>
+  <h4 name="authors"><%= book.authors %></h4>
+  <p name="summary"><%= book.summary %></p>
+  <p name="isbn" value="<%= book.isbn %>"></p>
+  <h4> <%= buttonname %></h4>
 </li>

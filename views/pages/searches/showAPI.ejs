@@ -13,12 +13,17 @@
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <%- include("../../layouts/detail",{book:book, path_folder: "search", path_id: book.isbn, buttonname:"Select This Book"}) %>
+          <%- include("../../layouts/detail",{book:book, buttonname:"Select This Book"}) %>
         <% }) %>
       </ul>
     </div>
+    <%- include("../../layouts/update-form") %>
     <footer></footer>
   </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/scripts/app.js"></script>
+
 </body>
 
 </html>

@@ -84,6 +84,7 @@ function getSavedBooks(request,response) {
 
 function getBooks(request,response) {
   // define handler
+  console.log('inside getBooks');
   const handler = {
     query: request.body.search_query,
     queryType: request.body.title==='on' ? 'intitle' : 'inauthor',
@@ -94,12 +95,13 @@ function getBooks(request,response) {
 function Book (data) {
   this.title = data.volumeInfo.title || 'Title not listed.';
   this.image = data.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
-  this.authors = data.volumeInfo.authors.join(', ') || 'Authors not listed.';
+  this.authors = data.volumeInfo.authors ? data.volumeInfo.authors.join(', ') : 'Authors not listed.';
   this.summary = data.volumeInfo.description || 'Summary not available.'
-  this.isbn = data.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not listed.'
+  this.isbn = data.volumeInfo.industryIdentifiers ? data.volumeInfo.industryIdentifiers[0].identifier : 'ISBN not listed.'
 }
 
 Book.fetch = function (handler,response) {
+  console.log('inside fetch');
   // request data from API
   const url = `https://www.googleapis.com/books/v1/volumes?q=${handler.queryType}:${handler.query}`
   superagent.get(url)
@@ -113,18 +115,20 @@ Book.fetch = function (handler,response) {
       response.render('./pages/searches/showAPI', { allBooks: results})
     })
     .catch(error => handleError(error));
-}
-
-Book.makeBooks = function (bookData) {
-  // build array to return to render
-  // make new Book objects for each item in incoming bookData
-  let allBooks = [];
-  if (bookData.length < 1) {
-    return allBooks;
-  } else {
-    if (bookData.length > 10) {
-      bookData = bookData.slice[0,10];
-    }
+  }
+  
+  Book.makeBooks = function (bookData) {
+    console.log('inside makeBooks');
+    // build array to return to render
+    // make new Book objects for each item in incoming bookData
+    let allBooks = [];
+    if (bookData.length < 1) {
+      return allBooks;
+    } else {
+      if (bookData.length > 10) {
+        bookData = bookData.slice[0,10];
+      }
+    console.log('bookData: ',bookData[0]);
     allBooks = bookData.map( entry => {
       let book = new Book(entry);
       return book;

@@ -13,7 +13,8 @@
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <%- include("./layouts/detail",{book:book, path_folder: "book", path_id: book.id, buttonname:"View Book Details"}) %>
+          <%- include("./layouts/detail",{book:book, buttonname:"View Book Details"}) %>
+          <a href="/book/<%= book.id %>"> <%= buttonname %> ></a>
         <% }) %>
       </ul>
     </div>

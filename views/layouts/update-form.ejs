@@ -1,21 +1,21 @@
-<form method="POST" action="/book/<%= book.id %>">
-  <label for="">
-    <input type="text" value="<%= selected.title %>">
+<form method="POST" action="">
+  <label for="">title
+    <input name="title" type="text" value="title">
   </label>
-  <label for="">
-    <input type="text" value="<%= selected.authors %>">
+  <label for="">authors
+    <input name="authors" type="text" value="authors">
   </label>
-  <label for="">
-    <input type="text" value="<%= selected.isbn %>">
+  <label for="">isbn
+    <input name="isbn" type="text" value="isbn">
   </label>
-  <label for="">
-    <input type="text" value="<%= selected.image %>">
+  <label for="">image
+    <input name="image" type="text" value="image">
   </label>
-  <label for="">
-    <textarea type="" value="<%= selected.summary %>">
+  <label for="">summary
+    <textarea type="summary" value="summary"></textarea>
   </label>
-  <select name="" id="">
-    <input type="text">
-  </select>
-  <a href="/select/<%= book.id %>">Select This Book</a>
+  <label for="">bookshelf
+    <input name="bookshelf" type="text" value="bookshelf">
+  </label>
+  <button>Add this book to my collection.</button>
 </form>
