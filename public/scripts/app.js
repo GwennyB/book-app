@@ -10,13 +10,15 @@ $('li').on('click', function(event) {
   let summary = ($(this)[0].children[3].innerHTML); // summary
   let isbn = ($(this)[0].children[4].innerHTML); // isbn
   
-  console.log($('form input[name="isbn"]'),$('form input[name="isbn"]'));
+  console.log($('form'));
   
+  // $('form').attr("action", `/search/${isbn}`);
   $('form input[name="title"]').val(title);
   $('form input[name="authors"]').val(authors);
   $('form input[name="isbn"]').val(isbn);
   $('form input[name="image"]').val(image);
   $('form textarea').val(summary);
   // // $('input[name="bookshelf"]').val();
+  $('li,h4').css('display','none');
   $('form').css('display','block');
 });

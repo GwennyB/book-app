@@ -9,12 +9,13 @@
   <h1>Saved Books</h1>
   <main>
     <header></header>
+    <a href="/search">Search for a book</a>
     <div></div>
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <%- include("./layouts/detail",{book:book, buttonname:"View Book Details"}) %>
-          <a href="/book/<%= book.id %>"> <%= buttonname %> ></a>
+          <%- include("./layouts/detail",{book:book}) %>
+          <a href="/book/<%= book.id %>">View Book Details></a>
         <% }) %>
       </ul>
     </div>

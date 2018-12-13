@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 const superagent = require('superagent');
 const pg = require('pg');
+const ejs = require('ejs');
 
 // middleware (captures req/res and modifies)
 app.use(express.urlencoded({ extended: true }));
@@ -28,13 +29,17 @@ app.get(('/search'), (request, response) => { // renders search form
 app.post('/search', getBooks); // requests, processes, and renders search results
 let searchResults = []; // to persist search results to enable single item search
 
-app.get('/search/:book_isbn', pickBook); // path from "Select This Book" button
+// app.get('/search/:book_isbn', pickBook); // path from "Select This Book" button
 // app.get('/newbook/:book_isbn', showForm); // path from "Select This Book" button
-app.post('/search/:book_isbn', saveBook); // path from book details update form
+app.post('/save', (request,response) => {
+  console.log('request',request.body);
+  saveBook(request,response);
+}); // path from book details update form
 
 app.get('/book/:book_id', getOneBook);
 
 function pickBook(request,response) {
+  console.log('inside pickBook');
   let selected = {};
   searchResults.forEach(val => {
     if (val.isbn === request.params.book_isbn) {
@@ -50,22 +55,26 @@ function pickBook(request,response) {
 // }
 
 function saveBook (selected,response) {
+  console.log('saveBook: selected',selected.body);
   let SQL = 'INSERT INTO bookslist (authors,title,isbn,image,summary) VALUES ($1,$2,$3,$4,$5) RETURNING id;';
 
   let values = [selected.authors,selected.title,selected.isbn,selected.image,selected.summary];
+  console.log('values: ', values);
   return client.query(SQL,values)
     .then (results => {
-      // console.log(`/book/${results.rows[0].id}`);
-      response.redirect(`/book/${results.rows[0].id}`);
+      console.log(`/book/${results.rows[0].id}`);
+      // response.redirect(`/book/${results.rows[0].id}`);
     })
     .catch(error => handleError(error));
 }
 
 function getOneBook (request,response) {
+  console.log('getOneBook request: ',request.params);
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
   let values = [request.params.book_id];
   return client.query(SQL,values)
     .then( results => {
+      console.log('getOneBook results: ',results.rows[0]);
       response.render('./index', {allBooks: results.rows});
     })
     .catch(error => handleError(error));
@@ -111,14 +120,14 @@ Book.fetch = function (handler,response) {
     })
     .then (results => {
       searchResults = results;
-      console.log('results to showAPI', results);
+      // console.log('results to showAPI', results);
       response.render('./pages/searches/showAPI', { allBooks: results})
     })
     .catch(error => handleError(error));
   }
   
   Book.makeBooks = function (bookData) {
-    console.log('inside makeBooks');
+    console.log('inside makeBooks', bookData);
     // build array to return to render
     // make new Book objects for each item in incoming bookData
     let allBooks = [];
@@ -128,7 +137,7 @@ Book.fetch = function (handler,response) {
       if (bookData.length > 10) {
         bookData = bookData.slice[0,10];
       }
-    console.log('bookData: ',bookData[0]);
+    // console.log('bookData: ',bookData[0]);
     allBooks = bookData.map( entry => {
       let book = new Book(entry);
       return book;
