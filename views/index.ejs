@@ -2,27 +2,20 @@
 <html>
 
 <head>
-  <title>Template</title>
+  <title>Saved Books</title>
 </head>
 
 <body>
-  <h1> hello world</h1>
+  <h1>Saved Books</h1>
   <main>
     <header></header>
+    <a href="/search">Search for a book</a>
     <div></div>
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <li>
-            <div>
-              <img src="<%= book.image %>" alt="<%= book.title %>">
-            </div>
-            <h3><%= book.title %></h3>
-            <% for (var author of book.authors) { %>
-            <h4><%= author %></h4>
-            <% } %>
-            <p><%= book.summary %></p>
-          </li>
+          <%- include("./layouts/detail",{book:book}) %>
+          <a href="/book/<%= book.id %>">View Book Details></a>
         <% }) %>
       </ul>
     </div>

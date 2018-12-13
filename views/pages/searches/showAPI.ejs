@@ -6,27 +6,26 @@
 </head>
 
 <body>
-  <h1> hello world</h1>
+  <h1>Search Results</h1>
   <main>
     <header></header>
+    <a href="/">Take me to my library.</a>
     <div></div>
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <li>
-            <div>
-              <img src="<%= book.image %>" alt="<%= book.title %>">
-            </div>
-            <h3><%= book.title %></h3>
-            <h4><%= book.authors %></h4>
-            <p><%= book.summary %></p>
-            <a href="/books/<%= book.id %>">View Book Details</a>
-          </li>
+          <%- include("../../layouts/detail",{book:book} )%>
+          <h4>Select This Book</h4>
         <% }) %>
       </ul>
     </div>
+    <%- include("../../layouts/update-form") %>
     <footer></footer>
   </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/scripts/app.js"></script>
+
 </body>
 
 </html>
