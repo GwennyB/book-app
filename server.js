@@ -20,36 +20,53 @@ client.on('error', err => console.error(err));
 
 //set templating engine
 app.set('view engine', 'ejs');
-app.get(('/'), getSavedBooks); // 
+app.get(('/'), getSavedBooks); // renders all books already in DB
 
-app.get(('/search'), (request, response) => {
+app.get(('/search'), (request, response) => { // renders search form
   response.render('./pages/searches/search');
 });
-app.post('/search', getBooks);
-let searchResults = [];
+app.post('/search', getBooks); // requests, processes, and renders search results
+let searchResults = []; // to persist search results to enable single item search
 
-app.get('/search/:book_isbn', changeBook);
-app.post('/selected/:book_isbn', saveBook);
+app.get('/search/:book_isbn', pickBook); // path from "Select This Book" button
+// app.get('/newbook/:book_isbn', showForm); // path from "Select This Book" button
+app.post('/search/:book_isbn', saveBook); // path from book details update form
 
-app.get('/books/:book_id', getOneBook);
+app.get('/book/:book_id', getOneBook);
 
-function changeBook(request,response) {
-  let selected = searchResults.forEach(val => {
+function pickBook(request,response) {
+  let selected = {};
+  searchResults.forEach(val => {
     if (val.isbn === request.params.book_isbn) {
-      return val;
+      selected = val;
     }
   })
-  response.send(selected);
+  console.log('selected: ',selected);
+  saveBook(selected,response);
+}
+
+// function showForm (){
+//   // use trigger to select
+// }
+
+function saveBook (selected,response) {
+  let SQL = 'INSERT INTO bookslist (authors,title,isbn,image,summary) VALUES ($1,$2,$3,$4,$5) RETURNING id;';
+
+  let values = [selected.authors,selected.title,selected.isbn,selected.image,selected.summary];
+  return client.query(SQL,values)
+    .then (results => {
+      // console.log(`/book/${results.rows[0].id}`);
+      response.redirect(`/book/${results.rows[0].id}`);
+    })
+    .catch(error => handleError(error));
 }
 
 function getOneBook (request,response) {
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
-  console.log('request.params.book_id',request.params);
   let values = [request.params.book_id];
   return client.query(SQL,values)
     .then( results => {
-      console.log('SQL results: ',results.rows);
-      response.render('./pages/detail', {book: results.rows[0]});
+      response.render('./index', {allBooks: results.rows});
     })
     .catch(error => handleError(error));
 
@@ -59,7 +76,7 @@ function getSavedBooks(request,response) {
   let SQL = 'SELECT * from bookslist;';
   return client.query(SQL)
     .then(results => {
-      response.render('./pages/searches/showDB', {allBooks: results.rows});
+      response.render('./index', {allBooks: results.rows});
     })
     .catch(error => handleError(error));
 }
@@ -88,12 +105,12 @@ Book.fetch = function (handler,response) {
   superagent.get(url)
     .then(results => {
       let arrOfBooks = Book.makeBooks(results.body.items);
-      return arrOfBooks
+      return arrOfBooks;
     })
     .then (results => {
       searchResults = results;
-      console.log('saved search: ',searchResults[0]);
-      response.render('./pages/searches/show', { allBooks: results})
+      console.log('results to showAPI', results);
+      response.render('./pages/searches/showAPI', { allBooks: results})
     })
     .catch(error => handleError(error));
 }
@@ -109,17 +126,15 @@ Book.makeBooks = function (bookData) {
       bookData = bookData.slice[0,10];
     }
     allBooks = bookData.map( entry => {
-      console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~book: ${entry.volumeInfo.title} ~~~` ,entry.volumeInfo.imageLinks);
       let book = new Book(entry);
       return book;
     })
-    // console.log('allBooks @ 74: ',allBooks.length);
     return allBooks;
   }
 }
 
 function handleError(error) {
-  response.send('Sorry, there was an error.');
+  console.error('Sorry, there was an error.');
 }
 
 app.listen(PORT, () => {

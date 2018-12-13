@@ -1,0 +1,21 @@
+<form method="POST" action="/book/<%= book.id %>">
+  <label for="">
+    <input type="text" value="<%= selected.title %>">
+  </label>
+  <label for="">
+    <input type="text" value="<%= selected.authors %>">
+  </label>
+  <label for="">
+    <input type="text" value="<%= selected.isbn %>">
+  </label>
+  <label for="">
+    <input type="text" value="<%= selected.image %>">
+  </label>
+  <label for="">
+    <textarea type="" value="<%= selected.summary %>">
+  </label>
+  <select name="" id="">
+    <input type="text">
+  </select>
+  <a href="/select/<%= book.id %>">Select This Book</a>
+</form>
