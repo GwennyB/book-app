@@ -23,37 +23,23 @@ client.on('error', err => console.error(err));
 app.set('view engine', 'ejs');
 app.get(('/'), getSavedBooks); // renders all books already in DB
 
-app.get(('/search'), (request, response) => { // renders search form
+// search route - renders search form
+app.get(('/search'), (request, response) => {
   response.render('./pages/searches/search');
 });
 app.post('/search', getBooks); // requests, processes, and renders search results
 let searchResults = []; // to persist search results to enable single item search
 
-// app.get('/search/:book_isbn', pickBook); // path from "Select This Book" button
-// app.get('/newbook/:book_isbn', showForm); // path from "Select This Book" button
+// save route - when user selects a book from search results
 app.post('/save', (request,response) => {
   console.log('request',request.body);
-  saveBook(request,response);
-}); // path from book details update form
+  saveBook(request.body,response);
+});
 
+ // bookID route - displays book details when selected from splash or after saving to DB
 app.get('/book/:book_id', getOneBook);
 
-function pickBook(request,response) {
-  console.log('inside pickBook');
-  let selected = {};
-  searchResults.forEach(val => {
-    if (val.isbn === request.params.book_isbn) {
-      selected = val;
-    }
-  })
-  console.log('selected: ',selected);
-  saveBook(selected,response);
-}
-
-// function showForm (){
-//   // use trigger to select
-// }
-
+// saves selected book to DB after details updated by user
 function saveBook (selected,response) {
   console.log('saveBook: selected',selected.body);
   let SQL = 'INSERT INTO bookslist (authors,title,isbn,image,summary) VALUES ($1,$2,$3,$4,$5) RETURNING id;';
@@ -63,11 +49,12 @@ function saveBook (selected,response) {
   return client.query(SQL,values)
     .then (results => {
       console.log(`/book/${results.rows[0].id}`);
-      // response.redirect(`/book/${results.rows[0].id}`);
+      response.redirect(`/book/${results.rows[0].id}`);
     })
     .catch(error => handleError(error));
 }
 
+// retrieve a book from DB by ID
 function getOneBook (request,response) {
   console.log('getOneBook request: ',request.params);
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
@@ -78,9 +65,9 @@ function getOneBook (request,response) {
       response.render('./index', {allBooks: results.rows});
     })
     .catch(error => handleError(error));
-
 }
 
+// retrieve all books from DB
 function getSavedBooks(request,response) {
   let SQL = 'SELECT * from bookslist;';
   return client.query(SQL)
@@ -90,7 +77,7 @@ function getSavedBooks(request,response) {
     .catch(error => handleError(error));
 }
 
-
+// set up for API request
 function getBooks(request,response) {
   // define handler
   console.log('inside getBooks');
@@ -101,6 +88,7 @@ function getBooks(request,response) {
   Book.fetch(handler,response);
 }
 
+// response object model
 function Book (data) {
   this.title = data.volumeInfo.title || 'Title not listed.';
   this.image = data.volumeInfo.imageLinks ? data.volumeInfo.imageLinks.thumbnail : 'http://www.bsmc.net.au/wp-content/uploads/No-image-available.jpg'; //
@@ -109,6 +97,7 @@ function Book (data) {
   this.isbn = data.volumeInfo.industryIdentifiers ? data.volumeInfo.industryIdentifiers[0].identifier : 'ISBN not listed.'
 }
 
+// request data from API, ask for formatted response, and send forward
 Book.fetch = function (handler,response) {
   console.log('inside fetch');
   // request data from API
@@ -125,18 +114,19 @@ Book.fetch = function (handler,response) {
     })
     .catch(error => handleError(error));
   }
-  
-  Book.makeBooks = function (bookData) {
-    console.log('inside makeBooks', bookData);
-    // build array to return to render
-    // make new Book objects for each item in incoming bookData
-    let allBooks = [];
-    if (bookData.length < 1) {
-      return allBooks;
-    } else {
-      if (bookData.length > 10) {
-        bookData = bookData.slice[0,10];
-      }
+
+// build book objects and populate response array
+Book.makeBooks = function (bookData) {
+  console.log('inside makeBooks', bookData);
+  // build array to return to render
+  // make new Book objects for each item in incoming bookData
+  let allBooks = [];
+  if (bookData.length < 1) {
+    return allBooks;
+  } else {
+    if (bookData.length > 10) {
+      bookData = bookData.slice[0,10];
+    }
     // console.log('bookData: ',bookData[0]);
     allBooks = bookData.map( entry => {
       let book = new Book(entry);
@@ -146,10 +136,12 @@ Book.fetch = function (handler,response) {
   }
 }
 
+// handle errors, but not gracefully
 function handleError(error) {
   console.error('Sorry, there was an error.');
 }
 
+// open port
 app.listen(PORT, () => {
   console.log(`listening to port: ${PORT}`);
 });
