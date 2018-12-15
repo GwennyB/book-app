@@ -9,22 +9,22 @@
   <h1>Search Results</h1>
   <main>
     <header></header>
-    <a href="/">Take me to my library.</a>
+    <a href="/search">Search for a book</a>
+    <a href="/">Take me to my library</a>
     <div></div>
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
-          <%- include("../../layouts/detail",{book:book} )%>
-          <h4>Select This Book</h4>
+          <%- include("../../layouts/detail",{book:book} ) %>
         <% }) %>
       </ul>
     </div>
-    <%- include("../../layouts/update-form") %>
+    <%- include("../../layouts/updateform", {formAction: ''}) %>
     <footer></footer>
   </main>
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/scripts/app.js"></script>
+  <script src="/scripts/selectbook.js"></script>
 
 </body>
 

@@ -1,4 +1,5 @@
-<form method="post" action="/save">
+<form method="post" action="<%= formAction === 'update' ? '/update/' : '/save' %>">
+  <input type="hidden" name="_method" value="<%- formAction === 'update' ? 'put' : 'post' %>">
   <label for="">title
     <input name="title" type="text" value="title">
   </label>
@@ -12,10 +13,10 @@
     <input name="image" type="text" value="image">
   </label>
   <label for="">summary
-    <textarea type="summary" value="summary"></textarea>
+    <textarea name="summary" value="summary"></textarea>
   </label>
   <label for="">bookshelf
     <input name="bookshelf" type="text" value="bookshelf">
   </label>
-  <button type="submit">Add this book to my collection.</button>
+  <button type="submit"><%- formAction === 'update' ? 'Update Book' : 'Add Book' %></button>
 </form>
