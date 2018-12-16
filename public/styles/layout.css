@@ -1,14 +1,26 @@
+
 header {
-  position: fixed;
   z-index: 100;
+  position: fixed;
+  width: 100%;
+  height: 20vw;
+  background-image: url("https://cdn78.picsart.com/185486539003201.jpg?r1024x1024");
 }
 
 .headroom {
-  padding-top: 225px;
+  padding-top: 20vw;
 }
 
-.headroom {
-  padding: 100px auto;
+footer {
+  position: fixed;
+  display: block;
+  width: 100vw;
+  bottom: 0px;
+  height: 10vw;
+}
+
+.footroom {
+  padding-bottom: 20vw;
 }
 
 .detail-wrapper {
@@ -22,5 +34,21 @@ header {
 @media screen and (min-width: 481px) {
   .detail {
     flex-flow: row wrap;
+  }
+
+  header {
+    height: 125px;
+  }
+
+  .headroom {
+    padding-top: 125px;
+  }
+
+  footer {
+    height: 75px;
+  }
+  
+  .footroom {
+    padding-top: 75px;
   }
 }

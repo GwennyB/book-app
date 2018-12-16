@@ -40,7 +40,7 @@ Actual time needed to complete: _____
 **Version**: 1.0.0 
 
 ## Overview
-This application accepts searches the Google Books API for book data based on user-defined search criteria, and it renders a subset of book data for the first 10 matches.
+This application searches the Google Books API for user-provided search criteria and renders basic descriptive data for all matches. It permits the user to save book details in a database for recall, and it supports edits and deletions of saved books.
 
 ## Getting Started
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
