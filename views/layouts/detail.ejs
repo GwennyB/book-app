@@ -8,7 +8,7 @@
   <p name="isbn"><%= book.isbn %></p>
   <p name="bookshelf"><%= book.bookshelf %></p>
   <% if (!book.id || typeof book.id !== 'number') { %>
-    <h4>Select This Book</h4>
+    <h4 class="locallink">Select This Book</h4>
   <% } %>
   <% if (book.id && book.isbn === "") { %>
     <a href="/book/<%= book.id %>">View Book Details></a>
