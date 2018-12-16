@@ -57,8 +57,8 @@ app.get('/error/:error', handleError);
 
 // update books in DB
 function updateBook ( request,response) {
-  console.log('inside updateBook - request.params: ',request.params);
-  console.log('inside updateBook - request.body: ',request.body);
+  console.log('inside updateBook - request.params: '); //,request.params
+  // console.log('inside updateBook - request.body: ',request.body);
   let SQL = 'UPDATE bookslist SET title=$1,authors=$2,isbn=$3,image=$4,summary=$5,bookshelf=$6 WHERE id=$7 returning id;';
   let {title,authors,isbn,image,summary,bookshelf} = request.body;
   let values = [title,authors,isbn,image,summary,bookshelf,request.params.book_id];
