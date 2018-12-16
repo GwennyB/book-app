@@ -1,3 +1,6 @@
+$('.hamburger').addClass("show");
+$('nav').removeClass("show");
+$('nav').addClass("hidden");
 
 $('.hamburger').on('click', function(event) {
   event.preventDefault();
@@ -8,9 +11,3 @@ $('.hamburger').on('click', function(event) {
   $('nav').addClass("show");
 })
 
-$('.nav>ul>li').on('click', function(event) {
-  event.preventDefault();
-  $('.hamburger').addClass("show");
-  $('nav').removeClass("show");
-  $('nav').addClass("hidden");
-})
