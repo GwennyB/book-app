@@ -8,7 +8,7 @@ $('li').on('click', function(event) {
 
   let liGrab = $(this).parent();
 
-  let image = (liGrab.find('[name="image"]')[0].src); // image URL
+  let image = (liGrab.find('[name="image"]')[0].currentSrc); // image URL
   let title = (liGrab.find('[name="title"]')[0].textContent); // title
   let authors = (liGrab.find('[name="authors"]')[0].textContent); // authors
   let summary = (liGrab.find('[name="summary"]')[0].textContent); // summary
