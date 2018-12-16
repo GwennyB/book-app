@@ -1,0 +1,17 @@
+header {
+  position: fixed;
+  z-index: 100;
+}
+
+.headroom {
+  padding-top: 200px;
+}
+
+.detail-wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 50;
+}
+

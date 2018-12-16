@@ -4,22 +4,20 @@
 <%- include("./../../layouts/head") %>
 
 <body>
-  <h1>Find a book</h1>
+  <%- include("./../../layouts/header", {pagename: pagename}) %>
   <main>
-    <%- include("./../../layouts/header") %>
-    <div></div>
     <div>
-      <form action="/search" method="post">
+      <form id="searchform" action="/search" method="post">
         <label>Enter a word or phrase to find in the title or author
           <input type="text" name="search_query">
         </label>
-        <label>Title
+        <label class="radio">Title
           <input type="radio" name="title">
         </label>
-        <label>Author
+        <label class="radio">Author
           <input type="radio" name="author">
         </label>
-        <button>Seach the Google Books API</button>
+        <button>Search Now</button>
       </form>
     </div>
     <footer></footer>

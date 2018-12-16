@@ -1,0 +1,65 @@
+body {
+  max-width: 480px;
+  background-image: url("https://cdn78.picsart.com/185486539003201.jpg?r1024x1024");
+  background-attachment: fixed;
+}
+
+h1,h2,h3,h4,h5,h6,p,a,label,input,button,textarea {
+  margin: 10px;
+}
+
+button {
+  background-color: rgb(95, 74, 45);
+  color: white;
+  border-radius: 20px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 4vw;
+  font-weight: bold;
+}
+
+h1,h2,h3,h4,h5,h6,p,a,label {
+  color: rgb(109, 85, 52);
+  font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+  font-size: 11vw;
+  font-weight: bold;
+}
+h2 {
+  font-size: 9vw;
+  font-weight: bold;
+}
+h3 {
+  font-size: 7vw;
+  font-weight: bold;
+}
+h4 {
+  font-size: 5vw;
+  font-weight: bold;
+}
+h5 {
+  font-size: 4vw;
+  font-weight: bold;
+}
+h6, p, a, label {
+  font-size: 3vw;
+  font-weight: bold;
+}
+
+
+a:link {
+  color: rgb(177, 100, 29);
+}
+
+a:visited {
+  color: burlywood;
+}
+
+a:hover, label:hover {
+  font-size: 4vw;
+}
+
+button:hover {
+  font-size: 5vw;
+}

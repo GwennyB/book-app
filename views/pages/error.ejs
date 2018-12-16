@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<%- include("./../layouts/head") %>
+<%- include("./../layouts/head", {pagename: pagename}) %>
 
 <body>
+  <%- include("./../layouts/header") %>
   <main>
-    <%- include("./../../layouts/header") %>
-    <h2>Instead of showing what you requested, I offer only this:</h2>
-    <h2>"<%= error %>"</h2>
-    <h2>One of us is a total</h2>
+    <h3>Oops... something went wrong!</h3>
+    <h4>When I asked the computer to get your stuff, it said:</h3>
+    <h4 class="error">"<%= error %>"</h4>
+    <h3>Stupid computers.</h3>
     <img src="https://media.giphy.com/media/RXdUmHLrBmKQM/giphy.gif" alt="failure">
     <footer></footer>
   </main>

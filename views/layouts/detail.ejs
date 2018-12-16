@@ -1,4 +1,4 @@
-<li>
+<li class="detail">
   <div>
     <img name="image" src="<%= book.image %>" alt="<%= book.title %>">
   </div>
@@ -14,8 +14,8 @@
     <a href="/book/<%= book.id %>">View Book Details></a>
   <% } %>
   <% if (book.id && book.isbn !== "") { %>
-    <p name="update">Update Book Details></p>
-    <a href="/delete/<%= book.id %>">Delete Book></a>
+    <a class="locallink" name="update">Update Book Details</a>
+    <a class="locallink" href="/delete/<%= book.id %>">Delete Book</a>
     <p type="hidden" name="book_id" id="<%= book.id %>"></p>
   <% } %>
 </li>
