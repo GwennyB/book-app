@@ -6,7 +6,7 @@ $('form').css('display','none');
 console.log('update: ',$('p[name="update"]'));
 console.log('delete: ',$('p[name="delete"]'));
 
-$('p[name="update"]').on('click', function(event) {
+$('a[name="update"]').on('click', function(event) {
   event.preventDefault();
 
   let liGrab = $(this).parent();

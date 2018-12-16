@@ -1,0 +1,15 @@
+main {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+h3 {
+  margin-bottom: 30px;
+  font-weight: bolder;
+}
+
+.error {
+  font-style: italic;
+  color: rgb(177, 100, 29);
+}

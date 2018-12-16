@@ -35,7 +35,7 @@ app.get(('/'), getSavedBooks); // renders all books already in DB
 
 // search route - renders search form
 app.get(('/search'), (request, response) => {
-  response.render('./pages/searches/search');
+  response.render('./pages/searches/search',{pagename: 'Search Google Books'});
 });
 app.post('/search', getBooks); // requests, processes, and renders search results
 // let searchResults = []; // to persist search results to enable single item search
@@ -117,7 +117,7 @@ function getOneBook (request,response) {
       .then( results => {
       // console.log('getOneBook results: ',results.rows[0]);
       // console.log('getOneBook shelves: ',shelves);
-        response.render('./index', {allBooks: results.rows, shelves: shelves});
+        response.render('./index', {allBooks: results.rows, shelves: shelves, pagename: 'Book Details'});
       })
     )
     .catch(error => response.redirect(`/error/${error}`));
@@ -135,7 +135,7 @@ function getSavedBooks(request,response) {
         val.isbn = '';
         val.bookshelf = '';
       })
-      response.render('./index', {allBooks: results.rows, shelves: []});
+      response.render('./index', {allBooks: results.rows, shelves: [], pagename: 'Saved Books'});
     })
     .catch(error => response.redirect(`/error/${error}`));
 }
@@ -178,7 +178,7 @@ function fetch (handler,response) {
       })
       .then (results => {
       // searchResults = results;
-        response.render('./pages/searches/showAPI', { allBooks: results, shelves: shelves})
+        response.render('./pages/searches/showAPI', { allBooks: results, shelves: shelves, pagename: 'Search Results'})
       })
     )
     .catch(error => response.redirect(`/error/${error}`));
@@ -208,7 +208,7 @@ function makeBooks (bookData) {
 // handle errors, but not gracefully
 function handleError(error,response) {
   console.error(error.params.error);
-  response.render('./pages/error', {error: error.params.error});
+  response.render('./pages/error', {error: error.params.error, pagename: ''});
 }
 
 // open port

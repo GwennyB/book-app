@@ -1,0 +1,34 @@
+form {
+  background-color: #f5deb3c7;
+  display: flex;
+  padding: 20px 0px;
+}
+
+#updateform {
+  flex-flow: column nowrap;
+  align-items: flex;
+}
+
+#updateform label,#updateform button, #updateform label input, #updateform label textarea {
+  width: 95%;
+  font-size: 4vw;
+}
+
+#searchform {
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+#searchform label,#searchform button, #searchform label input, #searchform label textarea {
+  width: 95%;
+  font-size: 4vw;
+}
+
+#searchform label.radio {
+  width: 35%;
+  padding-left: 10%;
+}
+
+#searchform label.radio input {
+  width: 30%;
+}
