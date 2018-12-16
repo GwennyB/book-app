@@ -10,17 +10,22 @@
   <main>
     <header></header>
     <a href="/search">Search for a book</a>
+    <a href="/">Take me to my library</a>
     <div></div>
     <div>
       <ul>
         <% allBooks.forEach( book => { %>
           <%- include("./layouts/detail",{book:book}) %>
-          <a href="/book/<%= book.id %>">View Book Details></a>
         <% }) %>
       </ul>
     </div>
+      <%- include("./layouts/updateform",{formAction:'update', shelves: shelves}) %>
     <footer></footer>
   </main>
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/scripts/updatebook.js"></script>
+  
 </body>
 
 </html>

@@ -6,4 +6,16 @@
   <h4 name="authors"><%= book.authors %></h4>
   <p name="summary"><%= book.summary %></p>
   <p name="isbn"><%= book.isbn %></p>
+  <p name="bookshelf"><%= book.bookshelf %></p>
+  <% if (!book.id || typeof book.id !== 'number') { %>
+    <h4>Select This Book</h4>
+  <% } %>
+  <% if (book.id && book.isbn === "") { %>
+    <a href="/book/<%= book.id %>">View Book Details></a>
+  <% } %>
+  <% if (book.id && book.isbn !== "") { %>
+    <p name="update">Update Book Details></p>
+    <a href="/delete/<%= book.id %>">Delete Book></a>
+    <p type="hidden" name="book_id" id="<%= book.id %>"></p>
+  <% } %>
 </li>

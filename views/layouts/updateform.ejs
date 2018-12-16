@@ -1,0 +1,27 @@
+<form method="post" action="<%= formAction === 'update' ? '/update/' : '/save' %>">
+  <input type="hidden" name="_method" value="<%- formAction === 'update' ? 'put' : 'post' %>">
+  <label for="">title
+    <input name="title" type="text" value="title">
+  </label>
+  <label for="">authors
+    <input name="authors" type="text" value="authors">
+  </label>
+  <label for="">isbn
+    <input name="isbn" type="text" value="isbn">
+  </label>
+  <label for="">image
+    <input name="image" type="text" value="image">
+  </label>
+  <label for="">summary
+    <textarea name="summary" value="summary"></textarea>
+  </label>
+  <label for="">bookshelf
+    <input name="bookshelf" list="shelves" type="text" placeholder="enter or select">
+      <datalist id="shelves">
+        <% shelves.forEach( shelf => { %>
+          <option value="<%= shelf.bookshelf %>"></option>
+        <% }) %>
+      </datalist>
+  </label>
+  <button type="submit"><%- formAction === 'update' ? 'Update Book' : 'Add Book' %></button>
+</form>
