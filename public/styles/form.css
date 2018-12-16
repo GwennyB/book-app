@@ -32,3 +32,16 @@ form {
 #searchform label.radio input {
   width: 30%;
 }
+
+@media screen and (min-width: 481px) {
+
+  #updateform label, #updateform button, 
+  #updateform label input, #updateform label textarea,
+  #searchform label,#searchform button, 
+  #searchform label input, #searchform label textarea {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  
+}

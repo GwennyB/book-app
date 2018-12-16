@@ -1,7 +1,11 @@
 body {
-  max-width: 480px;
+  width: 100vw;
   background-image: url("https://cdn78.picsart.com/185486539003201.jpg?r1024x1024");
   background-attachment: fixed;
+}
+
+main {
+  width: 100%;
 }
 
 h1,h2,h3,h4,h5,h6,p,a,label,input,button,textarea {
@@ -62,4 +66,44 @@ a:hover, label:hover {
 
 button:hover {
   font-size: 5vw;
+}
+
+
+@media screen and (min-width: 481px) {
+  body {
+    width: 100vw;
+    }
+
+  .detail-wrapper {
+    columns: 2;
+  }
+
+  h1 {
+    font-size: 60px;
+  }
+
+  h2 {
+    font-size: 48px;
+  }
+
+  h3 {
+    font-size: 36px;
+  }
+
+  h4 {
+    font-size: 28px;
+  }
+
+  h5, button {
+    font-size: 24px;
+  }
+
+  h6, p, a, label {
+    font-size: 18px;
+  }
+
+  a:hover, label:hover, button:hover {
+    font-size: 24px;
+  }
+
 }

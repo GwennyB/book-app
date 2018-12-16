@@ -11,7 +11,7 @@
 }
 
 
-a.locallink,p.locallink {
+a.locallink,p.locallink,h4.locallink {
   background-color: rgb(95, 74, 45);
   color: white;
   border-radius: 20px;
@@ -19,4 +19,22 @@ a.locallink,p.locallink {
   font-size: 4vw;
   font-weight: bold;
   padding: 30px;
+}
+
+@media screen and (min-width: 481px) {
+
+  a.locallink,p.locallink,h4.locallink {
+    font-size: 20px;
+    width: 45%;
+  }
+
+  a:hover {
+    font-size: 26px;
+  }
+
+  button, .locallink {
+    width: 70%;
+    text-align: center;
+  }
+
 }
