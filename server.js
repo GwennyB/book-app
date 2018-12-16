@@ -63,11 +63,8 @@ function updateBook ( request,response) {
   let {title,authors,isbn,image,summary,bookshelf} = request.body;
   let values = [title,authors,isbn,image,summary,bookshelf,request.params.book_id];
 
-  console.log('values: ',values);
-
   return client.query(SQL,values)
     .then (results => {
-      console.log(`redirect to: /book/${results.rows[0]}`);
       response.redirect(`/book/${results.rows[0].id}`);
     })
     .catch(error => response.redirect(`/error/${error}`));
@@ -78,8 +75,6 @@ function deleteBook ( request,response) {
   console.log('deleteBook: request',request.params.book_id);
   let SQL = 'DELETE FROM bookslist WHERE id=$1;';
   let values = [request.params.book_id];
-
-  console.log(`SQL delete: ${SQL}, values = ${values}`);
 
   return client.query(SQL,values)
     .then (response.redirect('/'))
@@ -95,14 +90,14 @@ function getShelves () {
 
 // saves selected book to DB after details updated by user
 function saveBook (selected,response) {
-  console.log('saveBook: selected',selected.body);
+  console.log('saveBook: selected'); //,selected.body
   let SQL = 'INSERT INTO bookslist (authors,title,isbn,image,summary,bookshelf) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id;';
   let values = [selected.body.authors,selected.body.title,selected.body.isbn,selected.body.image,selected.body.summary,selected.body.bookshelf];
 
   console.log('saveBook SQL values: ', values);
   return client.query(SQL,values)
     .then (results => {
-      console.log(`/book/${results.rows[0].id}`);
+      // console.log(`/book/${results.rows[0].id}`);
       response.redirect(`/book/${results.rows[0].id}`);
     })
     .catch(error => response.redirect(`/error/${error}`));
@@ -110,7 +105,7 @@ function saveBook (selected,response) {
 
 // retrieve a book from DB by ID
 function getOneBook (request,response) {
-  console.log('getOneBook request: ',request.params);
+  console.log('getOneBook request: '); //,request.params
   let shelves;
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
   let values = [request.params.book_id];
@@ -119,9 +114,9 @@ function getOneBook (request,response) {
       shelves = results;
     })
     .then (client.query(SQL,values)
-    .then( results => {
-      console.log('getOneBook results: ',results.rows[0]);
-      console.log('getOneBook shelves: ',shelves);
+      .then( results => {
+      // console.log('getOneBook results: ',results.rows[0]);
+      // console.log('getOneBook shelves: ',shelves);
         response.render('./index', {allBooks: results.rows, shelves: shelves});
       })
     )
