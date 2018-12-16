@@ -68,6 +68,10 @@ nav {
     top: 138px;
   }
 
+  .hidden {
+    top: -50vw;
+  }
+
   a:hover {
     font-size: 24px;
   }
