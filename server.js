@@ -38,7 +38,7 @@ app.get(('/search'), (request, response) => {
   response.render('./pages/searches/search');
 });
 app.post('/search', getBooks); // requests, processes, and renders search results
-let searchResults = []; // to persist search results to enable single item search
+// let searchResults = []; // to persist search results to enable single item search
 
 // save route - when user selects a book from search results
 app.post('/save', saveBook);
@@ -51,6 +51,9 @@ app.put('/update/:book_id', updateBook);
 
 // route to delete books from DB
 app.get('/delete/:book_id', deleteBook);
+
+// error route
+app.get('/error/:error', handleError);
 
 // update books in DB
 function updateBook ( request,response) {
@@ -67,7 +70,7 @@ function updateBook ( request,response) {
       console.log(`redirect to: /book/${results.rows[0]}`);
       response.redirect(`/book/${results.rows[0].id}`);
     })
-    .catch(error => handleError(error));
+    .catch(error => response.redirect(`/error/${error}`));
 }
 
 // delete book from database
@@ -80,7 +83,14 @@ function deleteBook ( request,response) {
 
   return client.query(SQL,values)
     .then (response.redirect('/'))
-    .catch(error => handleError(error));
+    .catch(error => response.redirect(`/error/${error}`));
+}
+
+// load bookshelves into form select
+function getShelves () {
+  let SQL = 'SELECT bookshelf FROM bookslist;';
+  return client.query(SQL)
+    .then (results => results.rows); 
 }
 
 // saves selected book to DB after details updated by user
@@ -95,26 +105,34 @@ function saveBook (selected,response) {
       console.log(`/book/${results.rows[0].id}`);
       response.redirect(`/book/${results.rows[0].id}`);
     })
-    .catch(error => handleError(error));
+    .catch(error => response.redirect(`/error/${error}`));
 }
 
 // retrieve a book from DB by ID
 function getOneBook (request,response) {
   console.log('getOneBook request: ',request.params);
+  let shelves;
   let SQL = 'SELECT * FROM bookslist WHERE id=$1;';
   let values = [request.params.book_id];
-  return client.query(SQL,values)
+  getShelves()
+    .then(results => {
+      shelves = results;
+    })
+    .then (client.query(SQL,values)
     .then( results => {
       console.log('getOneBook results: ',results.rows[0]);
-      response.render('./index', {allBooks: results.rows});
-    })
-    .catch(error => handleError(error));
+      console.log('getOneBook shelves: ',shelves);
+        response.render('./index', {allBooks: results.rows, shelves: shelves});
+      })
+    )
+    .catch(error => response.redirect(`/error/${error}`));
 }
 
 // retrieve all books from DB
 function getSavedBooks(request,response) {
   let SQL = 'SELECT * from bookslist;';
-  return client.query(SQL)
+  getShelves()
+  client.query(SQL)
     .then(results => {
       // change values of specific properties to '')
       results.rows.map( val => {
@@ -122,9 +140,9 @@ function getSavedBooks(request,response) {
         val.isbn = '';
         val.bookshelf = '';
       })
-      response.render('./index', {allBooks: results.rows});
+      response.render('./index', {allBooks: results.rows, shelves: []});
     })
-    .catch(error => handleError(error));
+    .catch(error => response.redirect(`/error/${error}`));
 }
 
 // set up for API request
@@ -151,17 +169,24 @@ function Book (data) {
 function fetch (handler,response) {
   console.log('inside fetch');
   // request data from API
+  let shelves;
+  
   const url = `https://www.googleapis.com/books/v1/volumes?q=${handler.queryType}:${handler.query}`
-  superagent.get(url)
+  getShelves()
     .then(results => {
-      let arrOfBooks = makeBooks(results.body.items);
-      return arrOfBooks;
+      shelves = results;
     })
-    .then (results => {
-      searchResults = results;
-      response.render('./pages/searches/showAPI', { allBooks: results})
-    })
-    .catch(error => handleError(error));
+    .then (superagent.get(url)
+      .then(results => {
+        let arrOfBooks = makeBooks(results.body.items);
+        return arrOfBooks;
+      })
+      .then (results => {
+      // searchResults = results;
+        response.render('./pages/searches/showAPI', { allBooks: results, shelves: shelves})
+      })
+    )
+    .catch(error => response.redirect(`/error/${error}`));
 }
 
 // build book objects and populate response array
@@ -186,8 +211,9 @@ function makeBooks (bookData) {
 }
 
 // handle errors, but not gracefully
-function handleError(error) {
-  console.error('Sorry, there was an error.');
+function handleError(error,response) {
+  console.error(error.params.error);
+  response.render('./pages/error', {error: error.params.error});
 }
 
 // open port

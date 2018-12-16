@@ -33,3 +33,14 @@ $('p[name="update"]').on('click', function(event) {
   $('form').css('display','block');
 })
 
+$('form input[name="bookshelf"]').on('mousedown', function(event) {
+  event.preventDefault();
+
+  $('form input[name="bookshelf"]').val('');
+})
+
+$('form input[name="bookshelf"]').on('mouseup', function(event) {
+  event.preventDefault();
+
+  $('form input[name="bookshelf"]').val();
+})

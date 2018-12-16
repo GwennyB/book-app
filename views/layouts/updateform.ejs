@@ -16,7 +16,12 @@
     <textarea name="summary" value="summary"></textarea>
   </label>
   <label for="">bookshelf
-    <input name="bookshelf" type="text" value="bookshelf">
+    <input name="bookshelf" list="shelves" type="text" placeholder="enter or select">
+      <datalist id="shelves">
+        <% shelves.forEach( shelf => { %>
+          <option value="<%= shelf.bookshelf %>"></option>
+        <% }) %>
+      </datalist>
   </label>
   <button type="submit"><%- formAction === 'update' ? 'Update Book' : 'Add Book' %></button>
 </form>
