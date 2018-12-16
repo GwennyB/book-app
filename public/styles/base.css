@@ -27,7 +27,7 @@ h1 {
   font-weight: bold;
 }
 h2 {
-  font-size: 9vw;
+  font-size: 8vw;
   font-weight: bold;
 }
 h3 {
@@ -49,11 +49,11 @@ h6, p, a, label {
 
 
 a:link {
-  color: rgb(177, 100, 29);
+  color: rgb(212, 114, 21);
 }
 
 a:visited {
-  color: burlywood;
+  color: rgb(105, 64, 11);
 }
 
 a:hover, label:hover {
