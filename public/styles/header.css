@@ -12,3 +12,6 @@ h1, header>div>a,header>nav,header>h2 {
 }
 
 
+h1,h2 {
+  text-align: center;
+}

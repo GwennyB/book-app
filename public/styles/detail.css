@@ -5,8 +5,11 @@
   width: 75%;
   display: flex;
   flex-flow: column wrap;
+  align-items: flex-start;
   margin-bottom: 20px;
+  padding: 10px;
 }
+
 
 a.locallink,p.locallink {
   background-color: rgb(95, 74, 45);
